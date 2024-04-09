@@ -19,6 +19,12 @@ public class ForismaticService {
             .connectTimeout(Duration.ofSeconds(20))
             .build();
 
+    private final String baseUrl;
+
+    ForismaticService() {
+        baseUrl = System.getenv().getOrDefault("API_BASE_URL", "http://api.forismatic.com/api/1.0/");
+    }
+
     /**
      * Communicate with the Forismatic API to retrieve a quote and it's author
      *
@@ -30,7 +36,7 @@ public class ForismaticService {
         HttpRequest request = null;
         try {
             // Using the text response type since the "user" for this data is a text based console
-            request = HttpRequest.newBuilder(new URI("http://api.forismatic.com/api/1.0/?method=getQuote&format=text&lang=" + lang))
+            request = HttpRequest.newBuilder(new URI(baseUrl + "?method=getQuote&format=text&lang=" + lang))
                     .POST(BodyPublishers.noBody())
                     .build();
         } catch (URISyntaxException e) {
